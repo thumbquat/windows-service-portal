@@ -5,12 +5,6 @@ using System.Threading.Tasks;
 
 namespace RemoteServiceManager.Models
 {
-    public enum ServiceAction
-    {
-        Stop,
-        Restart,
-        Start
-    }
     public class RemoteMachine
     {
         private string _name;

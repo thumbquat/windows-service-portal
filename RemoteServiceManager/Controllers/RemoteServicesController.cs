@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace RemoteServiceManager.Controllers
 {
     [Route("api/[controller]")]
-    public class RemoteController : Controller
+    public class RemoteServicesController : Controller
     {
         // GET: /<controller>/
         [HttpGet]
