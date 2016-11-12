@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
@@ -7,6 +6,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using RemoteServiceManager.Models;
 
 namespace RemoteServiceManager
 {
@@ -24,11 +24,17 @@ namespace RemoteServiceManager
 
         public IConfigurationRoot Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
+        // This method gets called by the runtime. Use this method to add service to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            // Add framework services.
+            // Add framework service.
             services.AddMvc();
+            services.AddOptions();
+            services.Configure<MyOptions>(Configuration.GetSection("MyOptions"));
+            services.AddTransient<IMachines, Machines>();
+            services.AddTransient<IMachine, Machine>();
+            services.AddTransient<IServices, Services>();
+            services.AddTransient<IService, Service>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

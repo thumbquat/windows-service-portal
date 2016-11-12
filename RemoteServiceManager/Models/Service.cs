@@ -5,15 +5,18 @@ using System.Threading.Tasks;
 
 namespace RemoteServiceManager.Models
 {
-    public class Service
+    public class Service : IService
     {
-        private ServiceStatus _status = ServiceStatus.Running;
-        public ServiceStatus Status
+        public string Name { get; }
+        public Service(string name)
         {
-            get
-            {
-                return _status;
-            }
+            Name = name;
+        }
+        private ServiceStatus _status = ServiceStatus.Running;
+        public ServiceStatus Status => _status;
+        public void StatusRequest(ServiceAction action)
+        {
+            throw new NotImplementedException();
         }
 
         public void Start()
