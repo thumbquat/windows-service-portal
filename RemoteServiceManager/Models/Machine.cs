@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace RemoteServiceManager.Models
 {
@@ -16,6 +17,15 @@ namespace RemoteServiceManager.Models
                 var service = (IService)servicesAccessor.GetService(typeof(IService));
                 service.Name = serviceName;
                 MachineServices.Add(service);
+            }
+        }
+
+        public void Initialize()
+        {
+            foreach (var service in MachineServices)
+            {
+                service.MachineName = Name;
+                service.Initialize();
             }
         }
     }

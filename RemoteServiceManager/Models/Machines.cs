@@ -16,6 +16,7 @@ namespace RemoteServiceManager.Models
             {
                 var machine = (IMachine)servicesAccessor.GetService(typeof(IMachine));
                 machine.Name = machineName;
+                machine.Initialize();
                 MachineList.Add(machine);
             }
         }

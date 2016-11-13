@@ -8,7 +8,9 @@ namespace RemoteServiceManager.Models
     public interface IService
     {
         string Name { get; set; }
-        ServiceControllerStatus Status { get; }
+        string MachineName { get; set; }
+        string Status { get; }
         void StatusRequest(ServiceAction action);
+        void Initialize();
     }
 }
