@@ -31,9 +31,8 @@ namespace RemoteServiceManager
             services.AddMvc();
             services.AddOptions();
             services.Configure<MyOptions>(Configuration.GetSection("MyOptions"));
-            services.AddTransient<IMachines, Machines>();
             services.AddTransient<IMachine, Machine>();
-            services.AddTransient<IServices, Services>();
+            services.AddTransient<IMachines, Machines>();
             services.AddTransient<IService, Service>();
         }
 

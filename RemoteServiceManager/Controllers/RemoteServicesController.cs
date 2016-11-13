@@ -6,8 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using RemoteServiceManager.Models;
 
-// For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
-
 namespace RemoteServiceManager.Controllers
 {
     [Route("api/[controller]")]
@@ -18,6 +16,7 @@ namespace RemoteServiceManager.Controllers
         {
             _machines = machines;
         }
+
         // GET: /<controller>/
         [HttpGet]
         public IActionResult Get()
@@ -25,4 +24,4 @@ namespace RemoteServiceManager.Controllers
             return Json(_machines);
         }
     }
-}
+} 

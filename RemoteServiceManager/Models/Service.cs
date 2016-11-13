@@ -7,11 +7,8 @@ namespace RemoteServiceManager.Models
 {
     public class Service : IService
     {
-        public string Name { get; }
-        public Service(string name)
-        {
-            Name = name;
-        }
+        public string Name { get; set; }
+
         private ServiceStatus _status = ServiceStatus.Running;
         public ServiceStatus Status => _status;
         public void StatusRequest(ServiceAction action)

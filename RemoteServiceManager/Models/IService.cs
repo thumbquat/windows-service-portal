@@ -6,7 +6,7 @@ namespace RemoteServiceManager.Models
 {
     public interface IService
     {
-        string Name { get; }
+        string Name { get; set; }
         ServiceStatus Status { get; }
         void StatusRequest(ServiceAction action);
     }

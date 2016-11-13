@@ -1,15 +1,22 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.Extensions.Options;
+using System;
+using System.Collections.Generic;
 
 namespace RemoteServiceManager.Models
 {
     public class Machine : IMachine
     {
-     public List<IServices> MachineServiceses { get; set; } = new List<IServices>();
-     public string Name { get; set; }
-        public Machine(string name)
-        {
-            Name = name;
-        }
+        public string Name { get; set; }
+        public List<IService> MachineServiceses { get; set; } = new List<IService>();
 
+        public Machine(IOptions<MyOptions> optionsAccessor, IServiceProvider servicesAccessor)
+        {
+            foreach (var serviceName in optionsAccessor.Value.ServiceNameList)
+            {
+                var service = (IService)servicesAccessor.GetService(typeof(IService));
+                service.Name = serviceName;
+                MachineServiceses.Add(service);
+            }
+        }
     }
 }
