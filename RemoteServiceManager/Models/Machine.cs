@@ -7,7 +7,7 @@ namespace RemoteServiceManager.Models
     public class Machine : IMachine
     {
         public string Name { get; set; }
-        public List<IService> MachineServiceses { get; set; } = new List<IService>();
+        public List<IService> MachineServices { get; set; } = new List<IService>();
 
         public Machine(IOptions<MyOptions> optionsAccessor, IServiceProvider servicesAccessor)
         {
@@ -15,7 +15,7 @@ namespace RemoteServiceManager.Models
             {
                 var service = (IService)servicesAccessor.GetService(typeof(IService));
                 service.Name = serviceName;
-                MachineServiceses.Add(service);
+                MachineServices.Add(service);
             }
         }
     }

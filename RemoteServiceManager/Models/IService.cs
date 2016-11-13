@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.ServiceProcess;
 using System.Threading.Tasks;
 
 namespace RemoteServiceManager.Models
@@ -7,7 +8,7 @@ namespace RemoteServiceManager.Models
     public interface IService
     {
         string Name { get; set; }
-        ServiceStatus Status { get; }
+        ServiceControllerStatus Status { get; }
         void StatusRequest(ServiceAction action);
     }
 }

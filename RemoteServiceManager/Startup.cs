@@ -30,7 +30,9 @@ namespace RemoteServiceManager
             // Add framework service.
             services.AddMvc();
             services.AddOptions();
+            // Add application configuration
             services.Configure<MyOptions>(Configuration.GetSection("MyOptions"));
+            // Add services for own types
             services.AddTransient<IMachine, Machine>();
             services.AddTransient<IMachines, Machines>();
             services.AddTransient<IService, Service>();
