@@ -36,10 +36,8 @@ namespace RemoteServiceManager.Models
 				}
 				catch (InvalidOperationException)
 				{
-
 					Status = "Not Installed";
 				}
-
 			}
 		}
 	}
