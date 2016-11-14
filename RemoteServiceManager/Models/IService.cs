@@ -11,6 +11,6 @@ namespace RemoteServiceManager.Models
         string MachineName { get; set; }
         string Status { get; }
         void StatusRequest(ServiceAction action);
-        void Initialize();
+        void GetStatus();
     }
 }

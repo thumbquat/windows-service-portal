@@ -7,6 +7,6 @@ namespace RemoteServiceManager.Models
         string Name { get; set; }
         List<IService> MachineServices { get; set; }
 
-        void Initialize();
+        void GetServiceStatus();
     }
 }

@@ -20,12 +20,12 @@ namespace RemoteServiceManager.Models
             }
         }
 
-        public void Initialize()
+        public void GetServiceStatus()
         {
             foreach (var service in MachineServices)
             {
                 service.MachineName = Name;
-                service.Initialize();
+                service.GetStatus();
             }
         }
     }
