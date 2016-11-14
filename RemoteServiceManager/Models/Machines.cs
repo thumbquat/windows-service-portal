@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Options;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +15,7 @@ namespace RemoteServiceManager.Models
         {
             foreach (var machineName in optionsAccessor.Value.MachineNameList)
             {
-                var machine = (IMachine)servicesAccessor.GetService(typeof(IMachine));
+                var machine = servicesAccessor.GetService<IMachine>();
                 machine.Name = machineName;
                 machine.GetServiceStatus();
                 MachineList.Add(machine);
