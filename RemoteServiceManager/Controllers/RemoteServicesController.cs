@@ -8,21 +8,18 @@ using RemoteServiceManager.Models;
 
 namespace RemoteServiceManager.Controllers
 {
-    [Route("api/[controller]")]
-    public class RemoteServicesController : Controller
-    {
-        private readonly INetwork _network;
-        public RemoteServicesController(INetwork network)
-        {
-            _network = network;
-        }
+	[Route("api/[controller]")]
+	public class RemoteServicesController : Controller
+	{
+		private readonly INetwork _network;
+		public RemoteServicesController(INetwork network)
+		{
+			_network = network;
+		}
 
-        // GET: /<controller>/
-        [HttpGet]
-        public IActionResult Get()
-        {
-            var list = _network.GetMachineNames();
-            return Json("test");
-        }
-    }
-} 
+		// GET: /<controller>/
+		[HttpGet]
+		public IActionResult Get()
+			=> Json(_network.GetMachineNames());
+	}
+}

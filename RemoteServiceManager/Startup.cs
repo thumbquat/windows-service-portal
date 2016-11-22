@@ -28,7 +28,7 @@ namespace RemoteServiceManager
         public void ConfigureServices(IServiceCollection services)
         {
             // Add framework service.
-            services.AddMvcCore();
+            services.AddMvc();
             services.AddOptions();
             // Add application configuration
             services.Configure<MyOptions>(Configuration.GetSection("MyOptions"));

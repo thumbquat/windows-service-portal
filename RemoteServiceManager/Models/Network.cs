@@ -9,7 +9,7 @@ namespace RemoteServiceManager.Models
 {
     public class Network : INetwork
     {
-        private readonly List<string> _machineNames;
+        private readonly IEnumerable<string> _machineNames;
         private readonly IEnumerable<string> _serviceNames;
 
         public Network(IOptions<MyOptions> options)
@@ -17,7 +17,7 @@ namespace RemoteServiceManager.Models
             _machineNames = options.Value.MachineNameList;
             _serviceNames = options.Value.ServiceNameList;
         }
-        public List<string> GetMachineNames()
+        public IEnumerable<string> GetMachineNames()
             => _machineNames;
 
         public IEnumerable<Tuple<string, string>> GetServiceStatuses(string machineName)

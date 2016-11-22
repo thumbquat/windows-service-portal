@@ -7,6 +7,6 @@ namespace RemoteServiceManager
     public interface INetwork
     {
         IEnumerable<Tuple<string, string>> GetServiceStatuses(string machineName);
-        List<string> GetMachineNames();
+		IEnumerable<string> GetMachineNames();
     }
 }
