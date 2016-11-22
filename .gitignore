@@ -1,3 +1,4 @@
 .vs
 RemoteServiceManager/bin
 RemoteServiceManager/obj
+**/project.lock.json

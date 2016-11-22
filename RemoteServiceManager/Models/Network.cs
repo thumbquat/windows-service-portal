@@ -9,7 +9,7 @@ namespace RemoteServiceManager.Models
 {
     public class Network : INetwork
     {
-        private readonly IEnumerable<string> _machineNames;
+        private readonly List<string> _machineNames;
         private readonly IEnumerable<string> _serviceNames;
 
         public Network(IOptions<MyOptions> options)
@@ -17,35 +17,33 @@ namespace RemoteServiceManager.Models
             _machineNames = options.Value.MachineNameList;
             _serviceNames = options.Value.ServiceNameList;
         }
-        public IEnumerable<string> GetMachineNames()
+        public List<string> GetMachineNames()
             => _machineNames;
 
         public IEnumerable<Tuple<string, string>> GetServiceStatuses(string machineName)
         {
             var statuses = new List<Tuple<string, string>>();
-            foreach (var serviceName in _serviceNames)
-            {
-                statuses.Add(Tuple.Create(serviceName, await GetServiceStatus(machineName, serviceName)));
-            }
+            Parallel.ForEach(_serviceNames, (serviceName) =>
+                statuses.Add(Tuple.Create(serviceName, GetServiceStatus(machineName, serviceName))));
             return statuses;
         }
 
-        private Task<string> GetServiceStatus(string machineName, string serviceName)
+        private string GetServiceStatus(string machineName, string serviceName)
         {
-            var tcs = new TaskCompletionSource<string>();
+            var serviceStatus = string.Empty;
             try
             {
                 using (var serviceController = new ServiceController(serviceName, machineName))
                 {
-                    tcs.SetResult(serviceController.Status.ToString());
+                    serviceStatus = serviceController.Status.ToString();
                 }
 
             }
             catch (InvalidOperationException)
             {
-                tcs.SetResult("Not Installed");
+                serviceStatus = "Not Installed";
             }
-            return tcs.Task;
+            return serviceStatus;
         }
     }
 }

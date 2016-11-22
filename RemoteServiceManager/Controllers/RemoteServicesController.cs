@@ -21,7 +21,8 @@ namespace RemoteServiceManager.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            return Json(_network.GetMachineNames());
+            var list = _network.GetMachineNames();
+            return Json(list);
         }
     }
 } 
