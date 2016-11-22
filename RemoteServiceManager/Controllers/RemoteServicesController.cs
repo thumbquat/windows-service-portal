@@ -22,7 +22,7 @@ namespace RemoteServiceManager.Controllers
         public IActionResult Get()
         {
             var list = _network.GetMachineNames();
-            return Json(list);
+            return Json("test");
         }
     }
 } 
