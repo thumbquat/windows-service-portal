@@ -28,14 +28,12 @@ namespace RemoteServiceManager
         public void ConfigureServices(IServiceCollection services)
         {
             // Add framework service.
-            services.AddMvc();
+            services.AddMvcCore();
             services.AddOptions();
             // Add application configuration
             services.Configure<MyOptions>(Configuration.GetSection("MyOptions"));
             // Add services for own types
-            services.AddTransient<IMachine, Machine>();
-            services.AddTransient<IMachines, Machines>();
-            services.AddTransient<IService, Service>();
+            services.AddTransient<INetwork, Network>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -11,17 +11,17 @@ namespace RemoteServiceManager.Controllers
     [Route("api/[controller]")]
     public class RemoteServicesController : Controller
     {
-        private readonly IMachines _machines;
-        public RemoteServicesController(IMachines machines)
+        private readonly INetwork _network;
+        public RemoteServicesController(INetwork network)
         {
-            _machines = machines;
+            _network = network;
         }
 
         // GET: /<controller>/
         [HttpGet]
         public IActionResult Get()
         {
-            return Json(_machines);
+            return Json(_network.GetMachineNames());
         }
     }
 } 
