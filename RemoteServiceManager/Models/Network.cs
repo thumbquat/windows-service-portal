@@ -18,11 +18,25 @@ namespace RemoteServiceManager.Models
 			_serviceNames = options.Value.ServiceNameList;
 		}
 
-		public bool ChangeServiceStatus(string machineName, string serviceName, string serviceAction)
+		public bool ChangeServiceStatus(string machineName, string serviceName, ServiceAction serviceAction)
 		{
-			using (var serviceController = new ServiceController(serviceName, machineName))
+			try
 			{
-				return true;
+				switch (serviceAction)
+				{
+					case ServiceAction.Start:
+						return StartService(serviceName, machineName);
+					case ServiceAction.Stop:
+						return StopService(serviceName, machineName);
+					case ServiceAction.Restart:
+						return RestartService(serviceName, machineName);
+					default:
+						return false;
+				}
+			}
+			catch (InvalidOperationException)
+			{
+				return false;
 			}
 		}
 
@@ -31,13 +45,40 @@ namespace RemoteServiceManager.Models
 
 		public IEnumerable<string> GetServiceNames()
 			=> _serviceNames;
-		
+
 		public IEnumerable<Tuple<string, string>> GetServiceStatuses(string machineName)
 		{
 			var statuses = new List<Tuple<string, string>>();
 			Parallel.ForEach(_serviceNames, (serviceName) =>
 				statuses.Add(Tuple.Create(serviceName, GetServiceStatus(machineName, serviceName))));
 			return statuses;
+		}
+
+		public bool RestartService(string servicename, string machineName)
+		{
+			throw new NotImplementedException();
+		}
+
+		public bool StartService(string servicename, string machineName)
+		{
+			throw new NotImplementedException();
+		}
+
+		public bool StopService(string servicename, string machineName)
+		{
+			using (var service = new ServiceController(servicename, machineName))
+			{
+				if (service.CanStop)
+				{
+					service.Stop();
+					service.WaitForStatus(ServiceControllerStatus.Stopped);
+					return true;
+				}
+				else
+				{
+					return false;
+				}
+			}
 		}
 
 		private string GetServiceStatus(string machineName, string serviceName)
@@ -49,7 +90,6 @@ namespace RemoteServiceManager.Models
 				{
 					serviceStatus = serviceController.Status.ToString();
 				}
-
 			}
 			catch (InvalidOperationException)
 			{
