@@ -25,14 +25,12 @@ namespace RemoteServiceManager.Controllers
 		public IActionResult GetServiceNames()
 			=> Json(_network.GetServiceNames());
 
-		[HttpGet("{machineName}")]
+		[HttpGet("status/{machineName}")]
 		public IActionResult GetServiceStatuses(string machineName)
 			=> Json(_network.GetServiceStatuses(machineName));
 
-		[HttpGet("{machineName}/{serviceName}/{serviceAction}")]
+		[HttpGet("changeservice/{machineName}/{serviceName}/{serviceAction}")]
 		public IActionResult ChangeServiceStatus(string machineName, string serviceName, string serviceAction)
-		{
-			return Json(_network.ChangeServiceStatus(machineName, serviceName, serviceAction));
-		}
+			=> Json(_network.ChangeServiceStatus(machineName, serviceName, serviceAction));
 	}
 }
