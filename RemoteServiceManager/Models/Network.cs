@@ -7,49 +7,55 @@ using System.Threading.Tasks;
 
 namespace RemoteServiceManager.Models
 {
-    public class Network : INetwork
-    {
-        private readonly IEnumerable<string> _machineNames;
-        private readonly IEnumerable<string> _serviceNames;
+	public class Network : INetwork
+	{
+		private readonly IEnumerable<string> _machineNames;
+		private readonly IEnumerable<string> _serviceNames;
 
-        public Network(IOptions<MyOptions> options)
-        {
-            _machineNames = options.Value.MachineNameList;
-            _serviceNames = options.Value.ServiceNameList;
-        }
+		public Network(IOptions<MyOptions> options)
+		{
+			_machineNames = options.Value.MachineNameList;
+			_serviceNames = options.Value.ServiceNameList;
+		}
 
 		public bool ChangeServiceStatus(string machineName, string serviceName, string serviceAction)
 		{
-			return true;
+			using (var serviceController = new ServiceController(serviceName, machineName))
+			{
+				return true;
+			}
 		}
 
 		public IEnumerable<string> GetMachineNames()
-            => _machineNames;
+			=> _machineNames;
 
-        public IEnumerable<Tuple<string, string>> GetServiceStatuses(string machineName)
-        {
-            var statuses = new List<Tuple<string, string>>();
-            Parallel.ForEach(_serviceNames, (serviceName) =>
-                statuses.Add(Tuple.Create(serviceName, GetServiceStatus(machineName, serviceName))));
-            return statuses;
-        }
+		public IEnumerable<string> GetServiceNames()
+			=> _serviceNames;
+		
+		public IEnumerable<Tuple<string, string>> GetServiceStatuses(string machineName)
+		{
+			var statuses = new List<Tuple<string, string>>();
+			Parallel.ForEach(_serviceNames, (serviceName) =>
+				statuses.Add(Tuple.Create(serviceName, GetServiceStatus(machineName, serviceName))));
+			return statuses;
+		}
 
-        private string GetServiceStatus(string machineName, string serviceName)
-        {
-            var serviceStatus = string.Empty;
-            try
-            {
-                using (var serviceController = new ServiceController(serviceName, machineName))
-                {
-                    serviceStatus = serviceController.Status.ToString();
-                }
+		private string GetServiceStatus(string machineName, string serviceName)
+		{
+			var serviceStatus = string.Empty;
+			try
+			{
+				using (var serviceController = new ServiceController(serviceName, machineName))
+				{
+					serviceStatus = serviceController.Status.ToString();
+				}
 
-            }
-            catch (InvalidOperationException)
-            {
-                serviceStatus = "Not Installed";
-            }
-            return serviceStatus;
-        }
-    }
+			}
+			catch (InvalidOperationException)
+			{
+				serviceStatus = "Not Installed";
+			}
+			return serviceStatus;
+		}
+	}
 }
