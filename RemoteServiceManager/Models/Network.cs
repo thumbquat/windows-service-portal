@@ -17,7 +17,13 @@ namespace RemoteServiceManager.Models
             _machineNames = options.Value.MachineNameList;
             _serviceNames = options.Value.ServiceNameList;
         }
-        public IEnumerable<string> GetMachineNames()
+
+		public bool ChangeServiceStatus(string machineName, string serviceName, string serviceAction)
+		{
+			return true;
+		}
+
+		public IEnumerable<string> GetMachineNames()
             => _machineNames;
 
         public IEnumerable<Tuple<string, string>> GetServiceStatuses(string machineName)

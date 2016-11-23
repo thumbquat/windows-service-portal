@@ -17,7 +17,6 @@ namespace RemoteServiceManager.Controllers
 			_network = network;
 		}
 
-		// GET: /<controller>/
 		[HttpGet]
 		public IActionResult GetMachineNames()
 			=> Json(_network.GetServiceStatuses("gilmond-smoke1"));
@@ -27,5 +26,10 @@ namespace RemoteServiceManager.Controllers
 		public IActionResult GetServiceStatuses(string machineName)
 			=> Json(_network.GetServiceStatuses(machineName));
 
+		[HttpGet("{machineName}/{serviceName}/{serviceAction}")]
+		public IActionResult ChangeServiceStatus(string machineName, string serviceName, string serviceAction)
+		{
+			return Json(_network.ChangeServiceStatus(machineName, serviceName, serviceAction));
+		}
 	}
 }
