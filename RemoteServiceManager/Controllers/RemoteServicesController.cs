@@ -19,7 +19,13 @@ namespace RemoteServiceManager.Controllers
 
 		// GET: /<controller>/
 		[HttpGet]
-		public IActionResult Get()
-			=> Json(_network.GetMachineNames());
+		public IActionResult GetMachineNames()
+			=> Json(_network.GetServiceStatuses("gilmond-smoke1"));
+		//=> Json(_network.GetMachineNames());
+
+		[HttpGet("{machineName}")]
+		public IActionResult GetServiceStatuses(string machineName)
+			=> Json(_network.GetServiceStatuses(machineName));
+
 	}
 }
