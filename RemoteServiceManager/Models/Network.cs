@@ -20,18 +20,20 @@ namespace RemoteServiceManager.Models
 
 		public bool ChangeServiceStatus(string machineName, string serviceName, ServiceAction serviceAction)
 		{
-			switch (serviceAction)
-			{
-				case ServiceAction.Start:
-					return StartService(serviceName, machineName);
-				case ServiceAction.Stop:
-					return StopService(serviceName, machineName);
-				case ServiceAction.Restart:
-					return RestartService(serviceName, machineName);
-				default:
-					return false;
-			}
+			//switch (serviceAction)
+			//{
+			//	case ServiceAction.Start:
+			//		return StartService(serviceName, machineName);
+			//	case ServiceAction.Stop:
+			//		return StopService(serviceName, machineName);
+			//	case ServiceAction.Restart:
+			//		return RestartService(serviceName, machineName);
+			//	default:
+			//		return false;
+			//}
+			return false;
 		}
+
 
 		public IEnumerable<string> GetMachineNames()
 			=> _machineNames;
@@ -39,11 +41,11 @@ namespace RemoteServiceManager.Models
 		public IEnumerable<string> GetServiceNames()
 			=> _serviceNames;
 
-		public IEnumerable<Tuple<string, string>> GetServiceStatuses(string machineName)
+		public IDictionary<string, string> GetServiceStatuses(string machineName)
 		{
-			var statuses = new List<Tuple<string, string>>();
+			var statuses = new Dictionary<string, string>();
 			Parallel.ForEach(_serviceNames, (serviceName) =>
-				statuses.Add(Tuple.Create(serviceName, GetServiceStatus(machineName, serviceName))));
+				statuses.Add(serviceName, GetServiceStatus(machineName, serviceName)));
 			return statuses;
 		}
 
