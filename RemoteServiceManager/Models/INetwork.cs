@@ -1,6 +1,4 @@
 ﻿using RemoteServiceManager.Models;
-using System;
-using System.Collections;
 using System.Collections.Generic;
 
 namespace RemoteServiceManager
@@ -9,9 +7,7 @@ namespace RemoteServiceManager
 	{
 		IDictionary<string, string> GetServiceStatuses(string machineName);
 		IEnumerable<string> GetMachineNames();
-
 		IEnumerable<string> GetServiceNames();
-
 		bool ChangeServiceStatus(string machineName, string serviceName, ServiceAction serviceAction);
 	}
 }

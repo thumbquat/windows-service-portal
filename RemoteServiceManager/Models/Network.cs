@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Options;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.ServiceProcess;
@@ -42,9 +43,8 @@ namespace RemoteServiceManager.Models
 
 		public IDictionary<string, string> GetServiceStatuses(string machineName)
 		{
-			var statuses = new Dictionary<string, string>();
-			Parallel.ForEach(_serviceNames, (serviceName) =>
-				statuses.Add(serviceName, GetServiceStatus(machineName, serviceName)));
+			var statuses = new ConcurrentDictionary<string, string>();
+			_serviceNames.AsParallel().ForAll(s => statuses.TryAdd(s, GetServiceStatus(machineName, s)));
 			return statuses;
 		}
 
