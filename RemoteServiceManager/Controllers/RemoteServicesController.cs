@@ -30,13 +30,13 @@ namespace RemoteServiceManager.Controllers
 
 		[HttpGet("action/{serviceAction}/{machineName}")]
 		public IActionResult ChangeAllServices(ServiceAction serviceAction, string machineName)
-			=> Json(ServiceActionToMachine(machineName, serviceAction));
+			=> Json(ServiceActionToMachine(serviceAction, machineName));
 
 		[HttpGet("action/{serviceAction}/{machineName}/{serviceName}")]
 		public IActionResult StopService(ServiceAction serviceAction, string machineName, string serviceName)
 			=> Json(new KeyValuePair<string, bool>(serviceName, _network.ChangeServiceStatus(machineName, serviceName, serviceAction)));
 
-		private ConcurrentDictionary<string, bool> ServiceActionToMachine(string machineName, ServiceAction action)
+		private ConcurrentDictionary<string, bool> ServiceActionToMachine(ServiceAction action, string machineName)
 		{
 			var results = new ConcurrentDictionary<string, bool>();
 			_network.GetServiceNames().AsParallel()

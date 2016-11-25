@@ -20,18 +20,17 @@ namespace RemoteServiceManager.Models
 
 		public bool ChangeServiceStatus(string machineName, string serviceName, ServiceAction serviceAction)
 		{
-			//switch (serviceAction)
-			//{
-			//	case ServiceAction.Start:
-			//		return StartService(serviceName, machineName);
-			//	case ServiceAction.Stop:
-			//		return StopService(serviceName, machineName);
-			//	case ServiceAction.Restart:
-			//		return RestartService(serviceName, machineName);
-			//	default:
-			//		return false;
-			//}
-			return false;
+			switch (serviceAction)
+			{
+				case ServiceAction.Start:
+					return StartService(serviceName, machineName);
+				case ServiceAction.Stop:
+					return StopService(serviceName, machineName);
+				case ServiceAction.Restart:
+					return RestartService(serviceName, machineName);
+				default:
+					return false;
+			}
 		}
 
 
@@ -49,10 +48,10 @@ namespace RemoteServiceManager.Models
 			return statuses;
 		}
 
-		public bool RestartService(string servicename, string machineName)
+		private bool RestartService(string servicename, string machineName)
 			=> StopService(servicename, machineName) && StartService(servicename, machineName);
 
-		public bool StartService(string servicename, string machineName)
+		private bool StartService(string servicename, string machineName)
 		{
 			try
 			{
@@ -69,8 +68,7 @@ namespace RemoteServiceManager.Models
 			}
 
 		}
-
-		public bool StopService(string servicename, string machineName)
+		private bool StopService(string servicename, string machineName)
 		{
 			try
 			{
