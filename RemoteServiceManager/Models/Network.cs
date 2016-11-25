@@ -20,23 +20,16 @@ namespace RemoteServiceManager.Models
 
 		public bool ChangeServiceStatus(string machineName, string serviceName, ServiceAction serviceAction)
 		{
-			try
+			switch (serviceAction)
 			{
-				switch (serviceAction)
-				{
-					case ServiceAction.Start:
-						return StartService(serviceName, machineName);
-					case ServiceAction.Stop:
-						return StopService(serviceName, machineName);
-					case ServiceAction.Restart:
-						return RestartService(serviceName, machineName);
-					default:
-						return false;
-				}
-			}
-			catch (InvalidOperationException)
-			{
-				return false;
+				case ServiceAction.Start:
+					return StartService(serviceName, machineName);
+				case ServiceAction.Stop:
+					return StopService(serviceName, machineName);
+				case ServiceAction.Restart:
+					return RestartService(serviceName, machineName);
+				default:
+					return false;
 			}
 		}
 
@@ -55,29 +48,47 @@ namespace RemoteServiceManager.Models
 		}
 
 		public bool RestartService(string servicename, string machineName)
-		{
-			throw new NotImplementedException();
-		}
+			=> StopService(servicename, machineName) && StartService(servicename, machineName);
 
 		public bool StartService(string servicename, string machineName)
 		{
-			throw new NotImplementedException();
+			try
+			{
+				using (var service = new ServiceController(servicename, machineName))
+				{
+					service.Start();
+					service.WaitForStatus(ServiceControllerStatus.Running);
+					return true;
+				}
+			}
+			catch (InvalidOperationException)
+			{
+				return false;
+			}
+
 		}
 
 		public bool StopService(string servicename, string machineName)
 		{
-			using (var service = new ServiceController(servicename, machineName))
+			try
 			{
-				if (service.CanStop)
+				using (var service = new ServiceController(servicename, machineName))
 				{
-					service.Stop();
-					service.WaitForStatus(ServiceControllerStatus.Stopped);
-					return true;
+					if (service.CanStop)
+					{
+						service.Stop();
+						service.WaitForStatus(ServiceControllerStatus.Stopped);
+						return true;
+					}
+					else
+					{
+						return false;
+					}
 				}
-				else
-				{
-					return false;
-				}
+			}
+			catch (InvalidOperationException)
+			{
+				return false;
 			}
 		}
 

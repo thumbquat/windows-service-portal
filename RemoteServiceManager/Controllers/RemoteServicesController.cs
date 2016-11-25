@@ -31,26 +31,29 @@ namespace RemoteServiceManager.Controllers
 
 		[HttpGet("stop/{machineName}")]
 		public IActionResult StopAllServices(string machineName)
-			=> Json(_network.GetServiceNames().Select(s => StopService(machineName, s)));
+			=> Json(_network.GetServiceNames().AsParallel()
+				.Select(s => Tuple.Create(s,(_network.ChangeServiceStatus(machineName, s, ServiceAction.Stop)))));
 
 		[HttpGet("start/{machineName}")]
 		public IActionResult StartAllServices(string machineName)
-			=> Json(_network.GetServiceNames().Select(s => StartService(machineName, s)));
+			=> Json(_network.GetServiceNames().AsParallel()
+				.Select(s => Tuple.Create(s, (_network.ChangeServiceStatus(machineName, s, ServiceAction.Start)))));
 
 		[HttpGet("restart/{machineName}")]
 		public IActionResult RestartAllServices(string machineName)
-			=> Json(_network.GetServiceNames().Select(s => RestartService(machineName, s)));
+			=> Json(_network.GetServiceNames().AsParallel()
+				.Select(s => Tuple.Create(s, (_network.ChangeServiceStatus(machineName, s, ServiceAction.Restart)))));
 
 		[HttpGet("stop/{machineName}/{serviceName}")]
 		public IActionResult StopService(string machineName, string serviceName)
-			=> Json(_network.ChangeServiceStatus(machineName, serviceName, ServiceAction.Stop));
+			=> Json(Tuple.Create(serviceName,_network.ChangeServiceStatus(machineName, serviceName, ServiceAction.Stop)));
 
 		[HttpGet("start/{machineName}/{serviceName}")]
 		public IActionResult StartService(string machineName, string serviceName)
-			=> Json(_network.ChangeServiceStatus(machineName, serviceName, ServiceAction.Start));
+			=> Json(Tuple.Create(serviceName,_network.ChangeServiceStatus(machineName, serviceName, ServiceAction.Start)));
 
 		[HttpGet("restart/{machineName}/{serviceName}")]
 		public IActionResult RestartService(string machineName, string serviceName)
-			=> Json(_network.ChangeServiceStatus(machineName, serviceName, ServiceAction.Restart));
+			=> Json(Tuple.Create(_network.ChangeServiceStatus(machineName, serviceName, ServiceAction.Restart)));
 	}
 }
