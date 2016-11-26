@@ -1,12 +1,11 @@
-﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using RemoteServiceManager.Models;
+using Microsoft.AspNetCore.Http;
+using React.AspNet;
 
 namespace RemoteServiceManager
 {
@@ -29,7 +28,9 @@ namespace RemoteServiceManager
         {
             // Add framework service.
             services.AddMvc();
+            services.AddReact();
             services.AddOptions();
+            services.AddSingleton<HttpContextAccessor, HttpContextAccessor>();
             // Add application configuration
             services.Configure<MyOptions>(Configuration.GetSection("MyOptions"));
             // Add services for own types
@@ -41,6 +42,8 @@ namespace RemoteServiceManager
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
+
+            app.UseReact(config => { });
 
             app.UseMvc();
         }
