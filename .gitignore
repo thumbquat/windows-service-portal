@@ -1,5 +1,5 @@
 .vs
-RemoteServiceManager/bin
-RemoteServiceManager/obj
+*/bin
+*/obj
 */project.lock.json
 */appsettings.json

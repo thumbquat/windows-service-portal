@@ -3,11 +3,11 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using RemoteServiceManager.Models;
+using WindowsServicePortal.Models;
 using Microsoft.AspNetCore.Http;
 using React.AspNet;
 
-namespace RemoteServiceManager
+namespace WindowsServicePortal
 {
     public class Startup
     {
@@ -30,7 +30,7 @@ namespace RemoteServiceManager
             services.AddMvc();
             services.AddReact();
             services.AddOptions();
-            services.AddSingleton<HttpContextAccessor, HttpContextAccessor>();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             // Add application configuration
             services.Configure<MyOptions>(Configuration.GetSection("MyOptions"));
             // Add services for own types
@@ -42,7 +42,7 @@ namespace RemoteServiceManager
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
-
+            app.UseStaticFiles();
             app.UseReact(config => { });
 
             app.UseMvc();

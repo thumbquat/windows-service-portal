@@ -1,7 +1,7 @@
-﻿using RemoteServiceManager.Models;
+﻿using WindowsServicePortal.Models;
 using System.Collections.Generic;
 
-namespace RemoteServiceManager
+namespace WindowsServicePortal
 {
 	public interface INetwork
 	{

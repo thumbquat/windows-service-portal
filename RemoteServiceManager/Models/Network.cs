@@ -6,7 +6,7 @@ using System.Linq;
 using System.ServiceProcess;
 using System.Threading.Tasks;
 
-namespace RemoteServiceManager.Models
+namespace WindowsServicePortal.Models
 {
 	public class Network : INetwork
 	{

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace RemoteServiceManager.Models
+namespace WindowsServicePortal.Models
 {
 	public enum ServiceAction
 	{
