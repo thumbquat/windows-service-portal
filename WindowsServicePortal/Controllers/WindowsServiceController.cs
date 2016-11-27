@@ -17,12 +17,12 @@ namespace WindowsServicePortal.Controllers
         [HttpGet("machineNames")]
         public IActionResult GetMachineNames()
             => Json(_network.GetMachineNames()
-                .Select(name => new { MachineName = name }));
+                .Select(name => new { Name = name }));
 
         [HttpGet("status/{machineName}")]
         public IActionResult GetServiceStatuses(string machineName)
             => Json(_network.GetServiceStatuses(machineName)
-                .Select(x => new { MachineName = machineName, ServiceName = x.Key, Status = x.Value }));
+                .Select(x => new { Name = x.Key, Status = x.Value }));
 
         [HttpGet("action/{serviceAction}/{machineName}")]
         public IActionResult ChangeAllServices(ServiceAction serviceAction, string machineName)

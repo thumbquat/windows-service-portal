@@ -54,7 +54,7 @@ namespace WindowsServicePortal
                 // See http://reactjs.net/ for more information. Example:
                 config
                   .AddScript("~/js/remarkable.min.js")
-                  .AddScript("~/js/home.jsx")
+                  .AddScript("~/js/app.jsx")
                   .SetJsonSerializerSettings(new JsonSerializerSettings
                   {
                       StringEscapeHandling = StringEscapeHandling.EscapeHtml,

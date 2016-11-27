@@ -2,7 +2,7 @@
 
 namespace WindowsServicePortal.Controllers
 {
-    [Route("[controller]")]
+    [Route ("")]
     public class PortalController : Controller
     {
         // GET: /<controller>/
