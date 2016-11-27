@@ -22,18 +22,19 @@ namespace WindowsServicePortal.Controllers
         [HttpGet("status/{machineName}")]
         public IActionResult GetServiceStatuses(string machineName)
             => Json(_network.GetServiceStatuses(machineName)
-                .Select(x => new { Name = x.Key, Status = x.Value }));
+                .Select(x => new { Name = x.Key, Status = x.Value })
+                .OrderBy(x => x.Name));
 
         [HttpGet("action/{serviceAction}/{machineName}")]
         public IActionResult ChangeAllServices(ServiceAction serviceAction, string machineName)
             => Json(ServiceActionToMachine(serviceAction, machineName)
                 .Select(x => new
                 {
-                    MachineName = machineName,
                     ServiceName = x.Key,
                     ServiceAction = serviceAction.ToString(),
                     Succeeded = x.Value
-                }));
+                })
+                .OrderBy(x => x.ServiceName));
 
         [HttpGet("action/{serviceAction}/{machineName}/{serviceName}")]
         public IActionResult ChangeService(ServiceAction serviceAction, string machineName, string serviceName)

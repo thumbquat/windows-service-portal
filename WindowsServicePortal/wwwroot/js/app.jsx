@@ -1,4 +1,7 @@
-﻿var MachineList = React.createClass({
+﻿var statusUrlRoot = "/api/windowsservice/status/";
+var machineListUrl = "/api/windowsservice/machinenames";
+
+var MachineList = React.createClass({
     getInitialState: function () {
         return { data: [] };
     },
@@ -42,7 +45,7 @@ var Machine = React.createClass({
 var ServiceList = React.createClass({
     loadServiceStatusFromServer: function () {
         var xhr = new XMLHttpRequest();
-        xhr.open('get', "/api/windowsservice/status/"+ this.props.machineName, true);
+        xhr.open('get', statusUrlRoot + this.props.machineName, true);
         xhr.onload = function () {
             var data = JSON.parse(xhr.responseText);
             this.setState({ data: data });
@@ -59,8 +62,7 @@ var ServiceList = React.createClass({
     render: function () {
         var serviceNodes = this.state.data.map(function (service) {
             return (
-                <Service name={service.name} status={service.status}>
-                </Service>
+                <Service name={service.name} status={service.status}/>
                 );
         })
         return (
@@ -75,13 +77,13 @@ var Service = React.createClass({
     render: function () {
         return (
           <div className="service">
-              <h3>{this.props.name} {this.props.status}</h3>
+              {this.props.name} {this.props.status}
           </div>
       );
     }
 });
 
 ReactDOM.render(
-  <MachineList url="/api/windowsservice/machinenames" />,
+  <MachineList url={machineListUrl} />,
   document.getElementById('content')
 );
