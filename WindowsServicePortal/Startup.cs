@@ -6,6 +6,8 @@ using Microsoft.Extensions.Logging;
 using WindowsServicePortal.Models;
 using Microsoft.AspNetCore.Http;
 using React.AspNet;
+using Newtonsoft.Json.Serialization;
+using Newtonsoft.Json;
 
 namespace WindowsServicePortal
 {
@@ -27,10 +29,11 @@ namespace WindowsServicePortal
         public void ConfigureServices(IServiceCollection services)
         {
             // Add framework service.
-            services.AddMvc();
-            services.AddReact();
-            services.AddOptions();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddReact();
+            services.AddMvc();
+            services.AddOptions();
+
             // Add application configuration
             services.Configure<MyOptions>(Configuration.GetSection("MyOptions"));
             // Add services for own types
@@ -42,8 +45,32 @@ namespace WindowsServicePortal
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
+
+            app.UseReact(config =>
+            {
+                // If you want to use server-side rendering of React components,
+                // add all the necessary JavaScript files here. This includes
+                // your components as well as all of their dependencies.
+                // See http://reactjs.net/ for more information. Example:
+                config
+                  .AddScript("~/js/remarkable.min.js")
+                  .AddScript("~/js/home.jsx")
+                  .SetJsonSerializerSettings(new JsonSerializerSettings
+                  {
+                      StringEscapeHandling = StringEscapeHandling.EscapeHtml,
+                      ContractResolver = new CamelCasePropertyNamesContractResolver()
+                  });
+
+                // If you use an external build too (for example, Babel, Webpack,
+                // Browserify or Gulp), you can improve performance by disabling
+                // ReactJS.NET's version of Babel and loading the pre-transpiled
+                // scripts. Example:
+                //config
+                //  .SetLoadBabel(false)
+                //  .AddScriptWithoutTransform("~/Scripts/bundle.server.js");
+            });
+
             app.UseStaticFiles();
-            app.UseReact(config => { });
 
             app.UseMvc();
         }
