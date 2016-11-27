@@ -33,17 +33,14 @@ var Machine = React.createClass({
             <h2 className="machineName">
                 {this.props.name}
             </h2>
-              <ServiceList machineName={this.props.name}/>
+              <ServiceList machineName={this.props.name} pollInterval={2000}/>
           </div>
       );
     }
 });
 
 var ServiceList = React.createClass({
-    getInitialState: function () {
-        return { data: [] };
-    },
-    componentWillMount: function () {
+    loadServiceStatusFromServer: function () {
         var xhr = new XMLHttpRequest();
         xhr.open('get', "/api/windowsservice/status/"+ this.props.machineName, true);
         xhr.onload = function () {
@@ -52,10 +49,17 @@ var ServiceList = React.createClass({
         }.bind(this);
         xhr.send();
     },
+    getInitialState: function () {
+        return { data: [] };
+    },
+    componentWillMount: function () {
+        this.loadServiceStatusFromServer();
+        window.setInterval(this.loadServiceStatusFromServer, this.props.pollInterval)
+    },
     render: function () {
         var serviceNodes = this.state.data.map(function (service) {
             return (
-                <Service name={service.name}>
+                <Service name={service.name} status={service.status}>
                 </Service>
                 );
         })
