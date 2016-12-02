@@ -22,23 +22,33 @@ var MachineList = React.createClass({
                 );
         })
         return (
-            <div className="machineList">
-                {machineNodes}
-            </div>)
+    <div className="machineList">
+        {machineNodes}
+    </div>)
         ;
     }
 });
 
 var Machine = React.createClass({
+    getInitialState: function () {
+        return { loadServiceList: true };
+    },
     render: function () {
         return (
-          <div className="machine">
-            <h2 className="machineName">
+            <div className="machine">
+            <h2 className="machineName" onClick={this.onClick}>
                 {this.props.name}
             </h2>
-              <ServiceList machineName={this.props.name} pollInterval={2000}/>
-          </div>
-      );
+                {
+                this.state.loadServiceList
+                ? <ServiceList machineName={this.props.name} pollInterval={3000} />
+	            : null
+                }
+            </div>
+	    );
+    },
+    onClick: function () {
+        this.setState({ loadServiceList: !this.state.loadServiceList });
     }
 });
 
@@ -62,13 +72,13 @@ var ServiceList = React.createClass({
     render: function () {
         var serviceNodes = this.state.data.map(function (service) {
             return (
-                <Service name={service.name} status={service.status}/>
+                <Service name={service.name} status={service.status} />
                 );
         })
         return (
-            <div className="serviceList">
-                {serviceNodes}
-            </div>)
+    <table className="serviceList">
+        <tbody>{serviceNodes}</tbody>
+    </table>)
         ;
     }
 });
@@ -76,9 +86,10 @@ var ServiceList = React.createClass({
 var Service = React.createClass({
     render: function () {
         return (
-          <div className="service">
-              {this.props.name} {this.props.status}
-          </div>
+              <tr className="serviceRow">
+                <td className="serviceRowName">{this.props.name}</td>
+                <td className="serviceRowStatus">{this.props.status}</td>
+              </tr>
       );
     }
 });
