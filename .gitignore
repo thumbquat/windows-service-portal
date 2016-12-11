@@ -3,3 +3,6 @@
 */obj
 */project.lock.json
 */appsettings.json
+/WindowsServicePortal/wwwroot/js
+/WindowsServicePortal/bower_components
+/WindowsServicePortal/node_modules
