@@ -1,54 +1,56 @@
 ﻿var statusUrlRoot = "/api/windowsservice/status/";
 var machineListUrl = "/api/windowsservice/machinenames";
 
+import { createStore } from "redux";
+
+let store = createStore();
+
+var App = React.createClass({
+    getInitialState: function () {
+        return { currentMachineName: "Loading" };
+    },
+    render: function () {
+        return (
+            <div>
+                <MachineList url={machineListUrl} />
+                <ServiceList machineName={this.state.currentMachineName} pollInterval={3000} />
+            </div>
+            );
+    }
+});
+
 var MachineList = React.createClass({
     getInitialState: function () {
-        return { data: [] };
+        return { data: [], currentMachineName: "Loading" };
     },
     componentWillMount: function () {
         var xhr = new XMLHttpRequest();
         xhr.open('get', this.props.url, true);
         xhr.onload = function () {
             var data = JSON.parse(xhr.responseText);
-            this.setState({ data: data });
+            this.setState({ data: data, currentMachineName: data[0].name });
         }.bind(this);
         xhr.send();
     },
     render: function () {
         var machineNodes = this.state.data.map(function (machine) {
-            return (
-                <Machine name={machine.name}>
-                </Machine>
-                );
+            return (<Machine name={machine.name} />)
         })
         return (
-    <div className="machineList">
-        {machineNodes}
-    </div>)
-        ;
+            <div className="machineList">
+                {machineNodes}
+            </div>
+            )
     }
 });
 
 var Machine = React.createClass({
-    getInitialState: function () {
-        return { loadServiceList: true };
-    },
     render: function () {
         return (
             <div className="machine">
-            <h2 className="machineName" onClick={this.onClick}>
                 {this.props.name}
-            </h2>
-                {
-                this.state.loadServiceList
-                ? <ServiceList machineName={this.props.name} pollInterval={3000} />
-	            : null
-                }
             </div>
 	    );
-    },
-    onClick: function () {
-        this.setState({ loadServiceList: !this.state.loadServiceList });
     }
 });
 
@@ -77,7 +79,11 @@ var ServiceList = React.createClass({
         })
         return (
     <table className="serviceList">
-        <tbody>{serviceNodes}</tbody>
+        <tbody>
+            <tr><th>Service</th>
+            <th>Status</th></tr>
+            {serviceNodes}
+        </tbody>
     </table>)
         ;
     }
@@ -95,6 +101,6 @@ var Service = React.createClass({
 });
 
 ReactDOM.render(
-  <MachineList url={machineListUrl} />,
+  <App />,
   document.getElementById('content')
 );
