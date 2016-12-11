@@ -1,21 +1,21 @@
 {
-  "name": "WindowsServicePortal",
-  "homepage": "https://github.com/Thumbquat/windows-service-portal",
-  "authors": [
-    "Seth Rider <seth.rider@gmail.com>"
-  ],
-  "description": "",
-  "main": "",
-  "license": "MIT",
-  "ignore": [
-    "**/.*",
-    "node_modules",
-    "bower_components",
-    "test",
-    "tests"
-  ],
-  "dependencies": {
-    "bootstrap": "3.3.6",
-    "font-awesome": "4.6.1"
-  }
+	"name": "WindowsServicePortal",
+	"homepage": "https://github.com/Thumbquat/windows-service-portal",
+	"authors": [
+		"Seth Rider <seth.rider@gmail.com>"
+	],
+	"description": "",
+	"main": "",
+	"license": "MIT",
+	"ignore": [
+		"**/.*",
+		"node_modules",
+		"bower_components",
+		"test",
+		"tests"
+	],
+	"dependencies": {
+		"bootstrap": "3.3.6",
+		"font-awesome": "4.6.1"
+	}
 }
