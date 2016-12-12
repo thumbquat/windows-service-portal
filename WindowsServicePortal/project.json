@@ -48,6 +48,7 @@
   "publishOptions": {
     "include": [
       "wwwroot",
+      "bower_components",
       "**/*.cshtml",
       "appsettings.json",
       "web.config"
