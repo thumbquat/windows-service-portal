@@ -33,6 +33,7 @@ namespace WindowsServicePortal
             services.AddReact();
             services.AddMvc();
             services.AddOptions();
+			services.AddMemoryCache();
 
             // Add application configuration
             services.Configure<MyOptions>(Configuration.GetSection("MyOptions"));
