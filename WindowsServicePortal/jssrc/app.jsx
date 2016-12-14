@@ -1,13 +1,17 @@
-﻿var statusUrlRoot = "/api/windowsservice/status/";
-var machineListUrl = "/api/windowsservice/machinenames";
-
+﻿import React from "react";
+import ReactDOM from "react-dom";
 import { createStore } from "redux";
 
-let store = createStore();
+var statusUrlRoot = "/api/windowsservice/status/";
+var machineListUrl = "/api/windowsservice/machinenames";
+var actionUrlRoot = "/api/windowsservice/action/";
+
+
+//let store = createStore();
 
 var App = React.createClass({
     getInitialState: function () {
-        return { currentMachineName: "Loading" };
+        return { currentMachineName: "Pending" };
     },
     render: function () {
         return (
@@ -16,12 +20,12 @@ var App = React.createClass({
                 <ServiceList machineName={this.state.currentMachineName} pollInterval={3000} />
             </div>
             );
-    }
+}
 });
 
 var MachineList = React.createClass({
     getInitialState: function () {
-        return { data: [], currentMachineName: "Loading" };
+        return { data: [], currentMachineName: "Pending" };
     },
     componentWillMount: function () {
         var xhr = new XMLHttpRequest();
@@ -34,14 +38,14 @@ var MachineList = React.createClass({
     },
     render: function () {
         var machineNodes = this.state.data.map(function (machine) {
-            return (<Machine name={machine.name} />)
-        })
-        return (
-            <div className="machineList">
-                {machineNodes}
-            </div>
+            return (<Machine key= {machine.name} name={machine.name} />)
+    })
+return (
+    <div className="machineList">
+        {machineNodes}
+    </div>
             )
-    }
+}
 });
 
 var Machine = React.createClass({
@@ -53,6 +57,7 @@ var Machine = React.createClass({
 	    );
     }
 });
+
 
 var ServiceList = React.createClass({
     loadServiceStatusFromServer: function () {
@@ -74,31 +79,48 @@ var ServiceList = React.createClass({
     render: function () {
         var serviceNodes = this.state.data.map(function (service) {
             return (
-                <Service name={service.name} status={service.status} />
+                <Service key={service.name} name={service.name} status={service.status} machineName={service.machineName} />
                 );
-        })
-        return (
-    <table className="serviceList">
-        <tbody>
-            <tr><th>Service</th>
-            <th>Status</th></tr>
-            {serviceNodes}
-        </tbody>
-    </table>)
-        ;
-    }
+})
+return (
+<table className="serviceList">
+<tbody>
+    <tr>
+    <th>Service</th>
+    <th>Status</th>
+    </tr>
+{serviceNodes}
+</tbody>
+</table>)
+;
+}
 });
 
 var Service = React.createClass({
+    actionRequest: function (action) {
+        var xhr = new XMLHttpRequest();
+        xhr.open("get", actionUrlRoot + action + "/" + this.props.machineName + "/" + this.props.name, true);
+        xhr.send();
+    },
+    start: function () {
+        this.actionRequest("start")
+    },
+    stop: function () {
+        this.actionRequest("stop")
+    },
+    restart: function () {
+        this.actionRequest("restart")
+    },
     render: function () {
         return (
-              <tr className="serviceRow">
-                <td className="serviceRowName">{this.props.name}</td>
-                <td className="serviceRowStatus">{this.props.status}</td>
-              </tr>
-      );
-    }
-});
+            <tr className="serviceRow">
+    <td className="serviceRowName">{this.props.name}</td>
+    <td className="serviceRowStatus">{this.props.status}</td>
+    <td className="startButton"><button onClick={this.start}>Start</button></td>
+    <td className="stopButton"><button onClick={this.stop}>Stop</button></td>
+    <td className="reStartButton"><button onClick={this.restart}>Restart</button></td>
+    </tr>);
+    } });
 
 ReactDOM.render(
   <App />,

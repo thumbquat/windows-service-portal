@@ -29,13 +29,11 @@ namespace WindowsServicePortal.Controllers
 			var cacheKey = $"status_{machineName}";
 			IActionResult result;
 			if (_memoryCache.TryGetValue(cacheKey, out result))
-			{
 				return result;
-			}
 			else
 			{
 				result = Json(_network.GetServiceStatuses(machineName)
-					   .Select(x => new { Name = x.Key, Status = x.Value })
+					   .Select(x => new { Name = x.Key, Status = x.Value, MachineName = machineName})
 					   .OrderBy(x => x.Name));
 				_memoryCache.Set(cacheKey, result,
 					new MemoryCacheEntryOptions()

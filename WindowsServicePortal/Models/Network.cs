@@ -33,7 +33,6 @@ namespace WindowsServicePortal.Models
 			}
 		}
 
-
 		public IEnumerable<string> GetMachineNames()
 			=> _machineNames;
 
