@@ -11,50 +11,57 @@ var actionUrlRoot = "/api/windowsservice/action/";
 
 var App = React.createClass({
     getInitialState: function () {
-        return { currentMachineName: "Pending" };
+        return { currentMachineName: "Loading" };
+    },
+    setCurrent: function (name) {
+        this.props.currentMachineName = name;
     },
     render: function () {
         return (
             <div>
-                <MachineList url={machineListUrl} />
-                <ServiceList machineName={this.state.currentMachineName} pollInterval={3000} />
-            </div>
-            );
+            <MachineList setCurrent={this.setCurrent} url={machineListUrl} currentMachineName={this.state.currentMachineName} />
+		<ServiceList machineName={this.state.currentMachineName} pollInterval={3000} />
+	    </div>
+	);
 }
 });
 
 var MachineList = React.createClass({
     getInitialState: function () {
-        return { data: [], currentMachineName: "Pending" };
-    },
+        return { data: [] };
+    }.bind(this),
     componentWillMount: function () {
         var xhr = new XMLHttpRequest();
         xhr.open('get', this.props.url, true);
         xhr.onload = function () {
             var data = JSON.parse(xhr.responseText);
-            this.setState({ data: data, currentMachineName: data[0].name });
+            this.setState({ data: data });
         }.bind(this);
         xhr.send();
     },
     render: function () {
         var machineNodes = this.state.data.map(function (machine) {
-            return (<Machine key= {machine.name} name={machine.name} />)
-    })
+            return (
+                <li key= {machine.name} >
+                    <Machine currentMachineName={machine.currentMachineName} name={machine.name}/>
+                </li>)
+})
 return (
-    <div className="machineList">
-        {machineNodes}
-    </div>
-            )
+<div className="navbar navbar-inverse navbar-fixed-left">
+  <a className="navbar-brand" href="#">Machines</a>
+  <ul className="nav navbar-nav">
+  {machineNodes}
+  </ul>
+</div>
+	)
 }
 });
 
 var Machine = React.createClass({
     render: function () {
         return (
-            <div className="machine">
-                {this.props.name}
-            </div>
-	    );
+                <a href="#">{this.props.name}</a>
+	);
     }
 });
 
@@ -79,19 +86,13 @@ var ServiceList = React.createClass({
     render: function () {
         var serviceNodes = this.state.data.map(function (service) {
             return (
-                <Service key={service.name} name={service.name} status={service.status} machineName={service.machineName} />
-                );
+            <Service key={service.name} name={service.name} status={service.status} machineName={service.machineName} />
+	    );
 })
 return (
-<table className="serviceList">
-<tbody>
-    <tr>
-    <th>Service</th>
-    <th>Status</th>
-    </tr>
-{serviceNodes}
-</tbody>
-</table>)
+<div className="container">
+        {serviceNodes}
+</div>)
 ;
 }
 });
@@ -113,16 +114,19 @@ var Service = React.createClass({
     },
     render: function () {
         return (
-            <tr className="serviceRow">
-    <td className="serviceRowName">{this.props.name}</td>
-    <td className="serviceRowStatus">{this.props.status}</td>
-    <td className="startButton"><button onClick={this.start}>Start</button></td>
-    <td className="stopButton"><button onClick={this.stop}>Stop</button></td>
-    <td className="reStartButton"><button onClick={this.restart}>Restart</button></td>
-    </tr>);
+            <div className="row">
+                <div className="col-xs-4">{this.props.name}</div>
+                <div className="col-xs-2">{this.props.status}</div>
+                <div className="col-xs-2">
+                    <i className="fa fa-play fa-fw" aria-hidden="true" onClick={this.start}></i>
+                    <i className="fa fa-stop fa-fw" aria-hidden="true" onClick={this.stop}></i>
+                    <i className="fa fa-refresh fa-fw" aria-hidden="true" onClick={this.restart}></i>
+                </div>
+            </div>
+        );
     } });
 
 ReactDOM.render(
-  <App />,
-  document.getElementById('content')
+    <App />,
+    document.getElementById('content')
 );

@@ -37,7 +37,7 @@ namespace WindowsServicePortal.Controllers
 					   .OrderBy(x => x.Name));
 				_memoryCache.Set(cacheKey, result,
 					new MemoryCacheEntryOptions()
-						.SetAbsoluteExpiration(TimeSpan.FromSeconds(3)));
+						.SetAbsoluteExpiration(TimeSpan.FromSeconds(2)));
 				return result;
 			}
 		}
