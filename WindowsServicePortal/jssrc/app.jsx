@@ -7,10 +7,10 @@ var actionUrlRoot = '/api/windowsservice/action/';
 
 var App = React.createClass({
     getInitialState: function () {
-	return { currentMachineName: 'testing' };
+	return { currentMachineName: 'init'};
     },
     setCurrent: function (name) {
-	this.props.currentMachineName = name;
+	this.setState({currentMachineName: name});
     },
     render: function () {
 	return (
@@ -32,18 +32,19 @@ var MachineList = React.createClass({
 	xhr.onload = function () {
 	    var data = JSON.parse(xhr.responseText);
 	    this.setState({ data: data });
+	    this.props.setCurrent(data[0].name);
 	}.bind(this);
 	xhr.send();
     },
     render: function () {
-	var machineNodes = this.state.data.map(function (machine) {
+	var machineNodes = this.state.data.map(function (machine, i) {
 	    return (
-		<li key= {machine.name} >
-		    <Machine currentMachineName={machine.currentMachineName} name={machine.name}/>
+		<li key={i} onClick={this.props.setCurrent.bind(null, machine.name)} className={this.props.currentMachineName === machine.name ? 'active' : '' }>
+		    <a href='#'>{machine.name}</a>
 		</li>)
-	})
+	}, this)
 	return (
-	    <div className='navbar navbar-inverse navbar-fixed-left'>
+	    <div className='navbar navbar-fixed-left navbar-inverse'>
 		<a className='navbar-brand' href='#'>Machines</a>
 		<ul className='nav navbar-nav'>
 		    {machineNodes}
@@ -52,15 +53,6 @@ var MachineList = React.createClass({
 	)
     }
 });
-
-var Machine = React.createClass({
-    render: function () {
-	return (
-	    <a href='#'>{this.props.name}</a>
-	);
-    }
-});
-
 
 var ServiceList = React.createClass({
     loadServiceStatusFromServer: function () {
@@ -80,9 +72,9 @@ var ServiceList = React.createClass({
 	window.setInterval(this.loadServiceStatusFromServer, this.props.pollInterval)
     },
     render: function () {
-	var serviceNodes = this.state.data.map(function (service) {
+	var serviceNodes = this.state.data.map(function (service, i) {
 	    return (
-		<Service key={service.name} name={service.name} status={service.status} machineName={service.machineName} />
+		<Service key={i} name={service.name} status={service.status} machineName={service.machineName} />
 	    );
 	})
 	return (
