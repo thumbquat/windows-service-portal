@@ -15,8 +15,8 @@ var App = React.createClass({
     render: function () {
 	return (
 	    <div>
-		<MachineList setCurrent={this.setCurrent} url={machineListUrl} currentMachineName={this.state.currentMachineName} />
-		<ServiceList machineName={this.state.currentMachineName} pollInterval={3000} />
+		    <MachineList setCurrent={this.setCurrent} url={machineListUrl} currentMachineName={this.state.currentMachineName} />
+		    <ServiceList machineName={this.state.currentMachineName} pollInterval={3000} />
 	    </div>
 	);
     }
@@ -44,7 +44,7 @@ var MachineList = React.createClass({
 		</li>)
 	}, this)
 	return (
-	    <div className='navbar navbar-fixed-left navbar-inverse'>
+	    <div className='navbar navbar-inverse'>
 		<a className='navbar-brand' href='#'>Machines</a>
 		<ul className='nav navbar-nav'>
 		    {machineNodes}
@@ -57,12 +57,15 @@ var MachineList = React.createClass({
 var ServiceList = React.createClass({
     loadServiceStatusFromServer: function () {
 	var xhr = new XMLHttpRequest();
-	xhr.open('get', statusUrlRoot + this.props.machineName, true);
-	xhr.onload = function () {
-	    var data = JSON.parse(xhr.responseText);
-	    this.setState({ data: data });
-	}.bind(this);
-	xhr.send();
+	if (this.props.machineName != 'init')
+	    {
+		xhr.open('get', statusUrlRoot + this.props.machineName, true);
+		xhr.onload = function () {
+		    var data = JSON.parse(xhr.responseText);
+		    this.setState({ data: data });
+		}.bind(this);
+		xhr.send();
+	    }
     },
     getInitialState: function () {
 	return { data: [] };
@@ -105,14 +108,14 @@ var Service = React.createClass({
 	    <div className='row'>
 		<div className='col-xs-4'>{this.props.name}</div>
 		<div className='col-xs-2'>{this.props.status}</div>
-		<div className='col-xs-2'>
-		    <button className='btn' disabled={this.props.status === 'Running' || this.props.status === 'Not Installed'}>
+		<div className='col-md-2'>
+		    <button className='btn btn-sm' disabled={this.props.status === 'Running' || this.props.status ==='Not Installed'}>
 			<i className='fa fa-play fa-fw' aria-hidden='true' onClick={this.start}></i>
 		    </button>
-		    <button className='btn' disabled={!this.props.status === 'Running' || this.props.status === 'Not Installed' || this.props.status === 'Stopped'}>
+		    <button className='btn btn-sm' disabled={this.props.status === 'Stopped' || this.props.status === 'Not Installed'}>
 			<i className='fa fa-stop fa-fw' aria-hidden='true' onClick={this.stop}></i>
 		    </button>
-		    <button className='btn' disabled={!this.props.status === 'Running' || this.props.status === 'Not Installed' || this.props.status === 'Stopped'}>
+		    <button className='btn btn-sm' disabled={this.props.status === 'Stopped' || this.props.status === 'Not Installed'}>
 			<i className='fa fa-refresh fa-fw' aria-hidden='true' onClick={this.restart}></i>
 		    </button>
 		</div>
