@@ -6,8 +6,8 @@ namespace WindowsServicePortal
 	public interface INetwork
 	{
 		IDictionary<string, string> GetServiceStatuses(string machineName);
-		IEnumerable<string> GetMachineNames();
-		IEnumerable<string> GetServiceNames();
+		IEnumerable<Machine> GetMachines();
+		IEnumerable<Service> GetServices();
 		bool ChangeServiceStatus(string machineName, string serviceName, ServiceAction serviceAction);
 	}
 }
