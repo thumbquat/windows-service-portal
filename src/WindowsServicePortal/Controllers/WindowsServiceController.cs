@@ -18,29 +18,27 @@ namespace WindowsServicePortal.Controllers
 			_memoryCache = memoryCache;
 		}
 
-		[HttpGet("machineNames")]
-		public IActionResult GetMachineNames()
-			=> Json(_network.GetMachineNames()
-				.Select(name => new { Name = name }));
+		[HttpGet("machines")]
+		public IActionResult GetMachines()
+			=> Json(_network.GetMachines());
 
 		[HttpGet("status/{machineName}")]
 		public IActionResult GetServiceStatuses(string machineName)
 		{
 			var cacheKey = $"status_{machineName}";
-			IActionResult result;
-			if (_memoryCache.TryGetValue(cacheKey, out result))
-				return result;
-			else
-			{
-				result = Json(_network.GetServiceStatuses(machineName)
-					   .Select(x => new { Name = x.Key, Status = x.Value, MachineName = machineName})
-					   .OrderBy(x => x.Name));
-				_memoryCache.Set(cacheKey, result,
-					new MemoryCacheEntryOptions()
-						.SetAbsoluteExpiration(TimeSpan.FromSeconds(2)));
-				return result;
-			}
-		}
+            if (_memoryCache.TryGetValue(cacheKey, out IActionResult result))
+                return result;
+            else
+            {
+                result = Json(_network.GetServiceStatuses(machineName)
+                       .Select(x => new { Name = x.Key, Status = x.Value, MachineName = machineName })
+                       .OrderBy(x => x.Name));
+                _memoryCache.Set(cacheKey, result,
+                    new MemoryCacheEntryOptions()
+                        .SetAbsoluteExpiration(TimeSpan.FromSeconds(2)));
+                return result;
+            }
+        }
 
 		[HttpGet("action/{serviceAction}/{machineName}")]
 		public IActionResult ChangeAllServices(ServiceAction serviceAction, string machineName)
@@ -66,8 +64,8 @@ namespace WindowsServicePortal.Controllers
 		private ConcurrentDictionary<string, bool> ServiceActionToMachine(ServiceAction action, string machineName)
 		{
 			var results = new ConcurrentDictionary<string, bool>();
-			_network.GetServiceNames().AsParallel()
-				.ForAll(s => results.TryAdd(s, _network.ChangeServiceStatus(machineName, s, action)));
+			_network.GetServices().AsParallel()
+				.ForAll(service => results.TryAdd(service.Name, _network.ChangeServiceStatus(machineName, service.Name, action)));
 			return results;
 		}
 	}
