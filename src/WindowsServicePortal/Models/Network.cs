@@ -51,6 +51,8 @@ namespace WindowsServicePortal.Models
 
 		private bool StartService(string servicename, string machineName)
 		{
+            if (IsReadonly(machineName))
+                return false;
 			try
 			{
 				using (var service = new ServiceController(servicename, machineName))
@@ -68,7 +70,9 @@ namespace WindowsServicePortal.Models
 		}
 		private bool StopService(string servicename, string machineName)
 		{
-			try
+            if (IsReadonly(machineName))
+                return false;
+            try
 			{
 				using (var service = new ServiceController(servicename, machineName))
 				{
@@ -106,5 +110,11 @@ namespace WindowsServicePortal.Models
 			}
 			return serviceStatus;
 		}
+
+        private bool IsReadonly(string machineName)
+            => _machines
+            .Where(machine => machine.ReadOnly)
+            .Select(machine => machine.NetworkName)
+            .Contains(machineName);
 	}
 }
