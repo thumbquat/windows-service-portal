@@ -276,3 +276,5 @@ __pycache__/
 /src/Portal/bower_components
 /src/WindowsServicePortal/wwwroot/js/app.js.map
 /src/WindowsServicePortal/wwwroot/js/app.js
+/src/WindowsServicePortal/bower_components
+/src/WindowsServicePortal/bower_components

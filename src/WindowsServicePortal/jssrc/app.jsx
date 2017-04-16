@@ -1,5 +1,10 @@
 ﻿import React from 'react';
 import ReactDOM from 'react-dom';
+import {
+    BrowserRouter as Router,
+    Route,
+    Link
+} from 'react-router-dom';
 
 var statusUrlRoot = '/api/windowsservice/status/';
 var machinesUrl = '/api/windowsservice/machines';
@@ -14,10 +19,12 @@ var App = React.createClass({
     },
     render: function () {
         return (
-            <div>
-                <MachineList setCurrent={this.setCurrent} url={machinesUrl} currentMachineName={this.state.currentMachineName} />
-                <ServiceList machineName={this.state.currentMachineName} readOnly={this.state.currentMachineReadOnly} pollInterval={3000} />
-            </div>
+            <Router>
+                <div>
+                    <MachineList setCurrent={this.setCurrent} url={machinesUrl} currentMachineName={this.state.currentMachineName} />
+                    <ServiceList machineName={this.state.currentMachineName} readOnly={this.state.currentMachineReadOnly} pollInterval={3000} />
+                </div>
+            </Router>
         );
     }
 });
@@ -40,7 +47,9 @@ var MachineList = React.createClass({
         var machineNodes = this.state.data.map(function (machine, i) {
             return (
                 <li key={i} onClick={this.props.setCurrent.bind(null, machine.networkName, machine.readOnly)} className={this.props.currentMachineName === machine.networkName ? 'active' : ''}>
-                    <a href='#'>{machine.displayName}</a>
+                    <Link to={machine.networkName}>
+                        {machine.displayName}
+                    </Link>
                 </li>)
         }, this)
         return (
@@ -78,7 +87,8 @@ var ServiceList = React.createClass({
             this.state.data.map(function (service, i) {
                 return (
                     <Service key={i} name={service.name} status={service.status} machineName={service.machineName} readOnly={readOnly} />
-                )}
+                )
+            }
             ));
     },
     render: function () {
@@ -110,7 +120,7 @@ var Service = React.createClass({
             <div className='row'>
                 <div className='col-xs-4'>{this.props.name}</div>
                 <div className='col-xs-2'>{this.props.status}</div>
-                { !this.props.readOnly &&
+                {!this.props.readOnly &&
                     <div className='col-md-2'>
                         <button className='btn btn-sm' disabled={this.props.status === 'Running' || this.props.status === 'Not Installed'}>
                             <i className='fa fa-play fa-fw' aria-hidden='true' onClick={this.start}></i>
