@@ -18,9 +18,9 @@ namespace WindowsServicePortal.Controllers
 			_memoryCache = memoryCache;
 		}
 
-		[HttpGet("machineNames")]
-		public IActionResult GetMachineNames()
-			=> Json(_network.GetMachineNames()
+		[HttpGet("machines")]
+		public IActionResult GetMachines()
+			=> Json(_network.GetMachines()
 				.Select(name => new { Name = name }));
 
 		[HttpGet("status/{machineName}")]
@@ -66,8 +66,8 @@ namespace WindowsServicePortal.Controllers
 		private ConcurrentDictionary<string, bool> ServiceActionToMachine(ServiceAction action, string machineName)
 		{
 			var results = new ConcurrentDictionary<string, bool>();
-			_network.GetServiceNames().AsParallel()
-				.ForAll(s => results.TryAdd(s, _network.ChangeServiceStatus(machineName, s, action)));
+			_network.GetServices().AsParallel()
+				.ForAll(service => results.TryAdd(service.Name, _network.ChangeServiceStatus(machineName, service.Name, action)));
 			return results;
 		}
 	}

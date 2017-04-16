@@ -9,13 +9,13 @@ namespace WindowsServicePortal.Models
 {
 	public class Network : INetwork
 	{
-		private readonly IEnumerable<string> _machineNames;
-		private readonly IEnumerable<string> _serviceNames;
+		private readonly IEnumerable<Machine> _machines;
+		private readonly IEnumerable<Service> _services;
 
 		public Network(IOptions<MyOptions> options)
 		{
-			_machineNames = options.Value.MachineNameList;
-			_serviceNames = options.Value.ServiceNameList;
+			_machines = options.Value.Machines;
+			_services = options.Value.Services;
 		}
 
 		public bool ChangeServiceStatus(string machineName, string serviceName, ServiceAction serviceAction)
@@ -33,16 +33,16 @@ namespace WindowsServicePortal.Models
 			}
 		}
 
-		public IEnumerable<string> GetMachineNames()
-			=> _machineNames;
+		public IEnumerable<Machine> GetMachines()
+			=> _machines;
 
-		public IEnumerable<string> GetServiceNames()
-			=> _serviceNames;
+		public IEnumerable<Service> GetServices()
+			=> _services;
 
 		public IDictionary<string, string> GetServiceStatuses(string machineName)
 		{
 			var statuses = new ConcurrentDictionary<string, string>();
-			_serviceNames.AsParallel().ForAll(s => statuses.TryAdd(s, GetServiceStatus(machineName, s)));
+			_services.AsParallel().ForAll(service => statuses.TryAdd(service.Name, GetServiceStatus(machineName, service.Name)));
 			return statuses;
 		}
 

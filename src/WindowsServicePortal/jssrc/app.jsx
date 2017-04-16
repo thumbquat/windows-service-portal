@@ -2,7 +2,7 @@
 import ReactDOM from 'react-dom';
 
 var statusUrlRoot = '/api/windowsservice/status/';
-var machineListUrl = '/api/windowsservice/machinenames';
+var machinesUrl = '/api/windowsservice/machines';
 var actionUrlRoot = '/api/windowsservice/action/';
 
 var App = React.createClass({
@@ -15,7 +15,7 @@ var App = React.createClass({
     render: function () {
 	return (
 	    <div>
-		    <MachineList setCurrent={this.setCurrent} url={machineListUrl} currentMachineName={this.state.currentMachineName} />
+            <MachineList setCurrent={this.setCurrent} url={machinesUrl} currentMachineName={this.state.currentMachineName} />
 		    <ServiceList machineName={this.state.currentMachineName} pollInterval={3000} />
 	    </div>
 	);
