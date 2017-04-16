@@ -40,7 +40,7 @@ var MachineList = React.createClass({
 	var machineNodes = this.state.data.map(function (machine, i) {
 	    return (
             <li key={i} onClick={this.props.setCurrent.bind(null, machine.networkName)} className={this.props.currentMachineName === machine.networkName ? 'active' : '' }>
-                <a href='#'>{machine.networkName}</a>
+                <a href='#'>{machine.displayName}</a>
 		</li>)
 	}, this)
 	return (
