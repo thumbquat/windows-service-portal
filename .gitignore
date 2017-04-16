@@ -274,3 +274,5 @@ __pycache__/
 # Cake - Uncomment if you are using it
 # tools/
 /src/Portal/bower_components
+/src/WindowsServicePortal/wwwroot/js/app.js.map
+/src/WindowsServicePortal/wwwroot/js/app.js
