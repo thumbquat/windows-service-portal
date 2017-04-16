@@ -32,15 +32,15 @@ var MachineList = React.createClass({
 	xhr.onload = function () {
 	    var data = JSON.parse(xhr.responseText);
 	    this.setState({ data: data });
-	    this.props.setCurrent(data[0].name);
+        this.props.setCurrent(data[0].networkName);
 	}.bind(this);
 	xhr.send();
     },
     render: function () {
 	var machineNodes = this.state.data.map(function (machine, i) {
 	    return (
-		<li key={i} onClick={this.props.setCurrent.bind(null, machine.name)} className={this.props.currentMachineName === machine.name ? 'active' : '' }>
-		    <a href='#'>{machine.name}</a>
+            <li key={i} onClick={this.props.setCurrent.bind(null, machine.networkName)} className={this.props.currentMachineName === machine.networkName ? 'active' : '' }>
+                <a href='#'>{machine.networkName}</a>
 		</li>)
 	}, this)
 	return (

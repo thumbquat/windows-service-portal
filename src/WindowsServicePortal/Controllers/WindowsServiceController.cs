@@ -20,27 +20,25 @@ namespace WindowsServicePortal.Controllers
 
 		[HttpGet("machines")]
 		public IActionResult GetMachines()
-			=> Json(_network.GetMachines()
-				.Select(name => new { Name = name }));
+			=> Json(_network.GetMachines());
 
 		[HttpGet("status/{machineName}")]
 		public IActionResult GetServiceStatuses(string machineName)
 		{
 			var cacheKey = $"status_{machineName}";
-			IActionResult result;
-			if (_memoryCache.TryGetValue(cacheKey, out result))
-				return result;
-			else
-			{
-				result = Json(_network.GetServiceStatuses(machineName)
-					   .Select(x => new { Name = x.Key, Status = x.Value, MachineName = machineName})
-					   .OrderBy(x => x.Name));
-				_memoryCache.Set(cacheKey, result,
-					new MemoryCacheEntryOptions()
-						.SetAbsoluteExpiration(TimeSpan.FromSeconds(2)));
-				return result;
-			}
-		}
+            if (_memoryCache.TryGetValue(cacheKey, out IActionResult result))
+                return result;
+            else
+            {
+                result = Json(_network.GetServiceStatuses(machineName)
+                       .Select(x => new { Name = x.Key, Status = x.Value, MachineName = machineName })
+                       .OrderBy(x => x.Name));
+                _memoryCache.Set(cacheKey, result,
+                    new MemoryCacheEntryOptions()
+                        .SetAbsoluteExpiration(TimeSpan.FromSeconds(2)));
+                return result;
+            }
+        }
 
 		[HttpGet("action/{serviceAction}/{machineName}")]
 		public IActionResult ChangeAllServices(ServiceAction serviceAction, string machineName)
