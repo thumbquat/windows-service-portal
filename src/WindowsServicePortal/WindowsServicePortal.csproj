@@ -30,5 +30,8 @@
     <PackageReference Include="React.AspNet" Version="3.0.0" />
     <PackageReference Include="System.ServiceProcess.ServiceController" Version="4.3.0" />
   </ItemGroup>
+  <ItemGroup>
+    <DotNetCliToolReference Include="Microsoft.Extensions.SecretManager.Tools" Version="1.0.0-msbuild3-final" />
+  </ItemGroup>
 
 </Project>
