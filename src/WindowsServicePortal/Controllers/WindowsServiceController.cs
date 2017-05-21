@@ -7,12 +7,12 @@ using System;
 
 namespace WindowsServicePortal.Controllers
 {
-	[Route("api/[controller]")]
+	[Route("api")]
 	public class WindowsService : Controller
 	{
-		private readonly INetwork _network;
+		private readonly Network _network;
 		private readonly IMemoryCache _memoryCache;
-		public WindowsService(INetwork network, IMemoryCache memoryCache)
+		public WindowsService(Network network, IMemoryCache memoryCache)
 		{
 			_network = network;
 			_memoryCache = memoryCache;
@@ -20,6 +20,7 @@ namespace WindowsServicePortal.Controllers
 
 		[HttpGet("machines")]
 		public IActionResult GetMachines()
+
 			=> Json(_network.GetMachines());
 
 		[HttpGet("status/{machineName}")]

@@ -6,9 +6,9 @@ import {
     Link
 } from 'react-router-dom';
 
-var statusUrlRoot = '/api/windowsservice/status/';
-var machinesUrl = '/api/windowsservice/machines';
-var actionUrlRoot = '/api/windowsservice/action/';
+var statusUrlRoot = '/api/status/';
+var machinesUrl = '/api/machines';
+var actionUrlRoot = '/api/action/';
 
 var App = React.createClass({
     getInitialState: function () {

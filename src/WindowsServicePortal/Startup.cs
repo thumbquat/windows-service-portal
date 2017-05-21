@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Http;
 using React.AspNet;
 using Newtonsoft.Json.Serialization;
 using Newtonsoft.Json;
+using System;
 
 namespace WindowsServicePortal
 {
@@ -39,7 +40,9 @@ namespace WindowsServicePortal
             // Add application configuration
             services.Configure<MyOptions>(Configuration.GetSection("MyOptions"));
             // Add services for own types
-            services.AddTransient<INetwork, Network>();
+            services.AddTransient<Network, Network>();
+            services.AddTransient<IServiceController, RealServiceController>();
+            services.AddSingleton<IServiceControllerFactory, RealServiceControllerFactory>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
