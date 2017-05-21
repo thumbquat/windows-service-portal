@@ -41,7 +41,6 @@ namespace WindowsServicePortal
             services.Configure<MyOptions>(Configuration.GetSection("MyOptions"));
             // Add services for own types
             services.AddTransient<Network, Network>();
-            services.AddTransient<IServiceController, RealServiceController>();
             services.AddSingleton<IServiceControllerFactory, RealServiceControllerFactory>();
         }
 

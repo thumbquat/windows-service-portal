@@ -3,11 +3,12 @@ using Xunit;
 
 namespace WindowServicePortal.Tests
 {
-    public class UnitTests
+    public class ControllerUnitTests
     {
         [Fact]
         public void Test1()
         {
+            
 
         }
     }
