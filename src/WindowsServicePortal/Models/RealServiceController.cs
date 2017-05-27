@@ -5,7 +5,6 @@ namespace WindowsServicePortal.Models
 {
     public class RealServiceController : IServiceController
     {
-        public static Func<string, string, IServiceController> GetServiceController;
         private ServiceController _serviceController;
         public RealServiceController(string machineName, string serviceName)
         {
