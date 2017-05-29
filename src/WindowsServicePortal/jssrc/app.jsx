@@ -2,6 +2,7 @@
 import ReactDOM from 'react-dom';
 import {
     BrowserRouter as Router,
+    Switch,
     Route,
     Link
 } from 'react-router-dom';
@@ -21,7 +22,7 @@ var App = React.createClass({
         return (
             <Router>
                 <div>
-                    <MachineList setCurrent={this.setCurrent} url={machinesUrl} currentMachineName={this.state.currentMachineName} {...this.props}/>
+                    <MachineList setCurrent={this.setCurrent} url={machinesUrl} currentMachineName={this.state.currentMachineName} {...this.props} />
                     <ServiceList machineName={this.state.currentMachineName} readOnly={this.state.currentMachineReadOnly} pollInterval={3000} />
                 </div>
             </Router>
@@ -46,8 +47,8 @@ var MachineList = React.createClass({
     render: function () {
         var machineNodes = this.state.data.map(function (machine, i) {
             return (
-                <li key={i}  className={this.props.currentMachineName === machine.networkName ? 'active' : ''}>
-                    <Link to={machine.networkName} onClick={this.props.setCurrent.bind(null, machine.networkName, machine.readOnly)}>
+                <li key={i} className={this.props.currentMachineName === machine.networkName ? 'active' : ''}>
+                    <Link to={{ pathname: machine.networkName }} onClick={this.props.setCurrent.bind(null, machine.networkName, machine.readOnly)}>
                         {machine.displayName}
                     </Link>
                 </li>)
@@ -138,11 +139,10 @@ var Service = React.createClass({
     }
 });
 
+
 ReactDOM.render(
     <Router>
-        <Route path="/:machine" render={props =>
-            <App {...props} />
-        } />
+        <Route path="/:currentMachineName?" component={App} />
     </Router>,
     document.getElementById('content')
 );
