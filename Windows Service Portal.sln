@@ -1,10 +1,14 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26228.4
+VisualStudioVersion = 15.0.26430.6
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{BC44538C-667C-473E-9B67-0CDE3D0563D7}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WindowsServicePortal", "src\WindowsServicePortal\WindowsServicePortal.csproj", "{492A3CE5-1471-46BD-8482-BC15651018B3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{6C590788-9A02-482D-8FB5-59E85AB86C7B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WindowsServicePortal.Tests", "tests\WindowsServicePortal.Tests\WindowsServicePortal.Tests.csproj", "{2B81D66B-158F-4C78-ADE8-8867A8FDA05E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -28,11 +32,24 @@ Global
 		{492A3CE5-1471-46BD-8482-BC15651018B3}.Release|x64.Build.0 = Release|Any CPU
 		{492A3CE5-1471-46BD-8482-BC15651018B3}.Release|x86.ActiveCfg = Release|Any CPU
 		{492A3CE5-1471-46BD-8482-BC15651018B3}.Release|x86.Build.0 = Release|Any CPU
+		{2B81D66B-158F-4C78-ADE8-8867A8FDA05E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2B81D66B-158F-4C78-ADE8-8867A8FDA05E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2B81D66B-158F-4C78-ADE8-8867A8FDA05E}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{2B81D66B-158F-4C78-ADE8-8867A8FDA05E}.Debug|x64.Build.0 = Debug|Any CPU
+		{2B81D66B-158F-4C78-ADE8-8867A8FDA05E}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{2B81D66B-158F-4C78-ADE8-8867A8FDA05E}.Debug|x86.Build.0 = Debug|Any CPU
+		{2B81D66B-158F-4C78-ADE8-8867A8FDA05E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2B81D66B-158F-4C78-ADE8-8867A8FDA05E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2B81D66B-158F-4C78-ADE8-8867A8FDA05E}.Release|x64.ActiveCfg = Release|Any CPU
+		{2B81D66B-158F-4C78-ADE8-8867A8FDA05E}.Release|x64.Build.0 = Release|Any CPU
+		{2B81D66B-158F-4C78-ADE8-8867A8FDA05E}.Release|x86.ActiveCfg = Release|Any CPU
+		{2B81D66B-158F-4C78-ADE8-8867A8FDA05E}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{492A3CE5-1471-46BD-8482-BC15651018B3} = {BC44538C-667C-473E-9B67-0CDE3D0563D7}
+		{2B81D66B-158F-4C78-ADE8-8867A8FDA05E} = {6C590788-9A02-482D-8FB5-59E85AB86C7B}
 	EndGlobalSection
 EndGlobal

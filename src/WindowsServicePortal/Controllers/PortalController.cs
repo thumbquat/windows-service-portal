@@ -5,8 +5,9 @@ namespace WindowsServicePortal.Controllers
 	[Route("")]
 	public class PortalController : Controller
 	{
-		// GET: /<controller>/
-		public IActionResult React()
+        [HttpGet("")]
+        [HttpGet("{machineName}")]
+        public IActionResult React()
 			=> View();
 	}
 }

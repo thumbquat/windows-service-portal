@@ -7,15 +7,18 @@ using System.ServiceProcess;
 
 namespace WindowsServicePortal.Models
 {
-	public class Network : INetwork
+	public class Network
 	{
 		private readonly IEnumerable<Machine> _machines;
 		private readonly IEnumerable<Service> _services;
 
-		public Network(IOptions<MyOptions> options)
+		private readonly IServiceControllerFactory _serviceControllerFactory;
+
+        public Network(IOptions<MyOptions> options, IServiceControllerFactory serviceControllerFactory)
 		{
 			_machines = options.Value.Machines;
 			_services = options.Value.Services;
+			_serviceControllerFactory = serviceControllerFactory;
 		}
 
 		public bool ChangeServiceStatus(string machineName, string serviceName, ServiceAction serviceAction)
@@ -55,7 +58,7 @@ namespace WindowsServicePortal.Models
                 return false;
 			try
 			{
-				using (var service = new ServiceController(servicename, machineName))
+				using (var service = _serviceControllerFactory.GetServiceController(machineName, servicename))
 				{
 					service.Start();
 					service.WaitForStatus(ServiceControllerStatus.Running);
@@ -68,15 +71,15 @@ namespace WindowsServicePortal.Models
 			}
 
 		}
-		private bool StopService(string servicename, string machineName)
+		private bool StopService(string serviceName, string machineName)
 		{
             if (IsReadonly(machineName))
                 return false;
             try
 			{
-				using (var service = new ServiceController(servicename, machineName))
+				using (var service = _serviceControllerFactory.GetServiceController(machineName, serviceName))
 				{
-					if (service.CanStop)
+					if (service.CanStop())
 					{
 						service.Stop();
 						service.WaitForStatus(ServiceControllerStatus.Stopped);
@@ -99,9 +102,9 @@ namespace WindowsServicePortal.Models
 			var serviceStatus = string.Empty;
 			try
 			{
-				using (var serviceController = new ServiceController(serviceName, machineName))
+				using (var serviceController = _serviceControllerFactory.GetServiceController(machineName, serviceName))
 				{
-					serviceStatus = serviceController.Status.ToString();
+					serviceStatus = serviceController.GetStatus().ToString();
 				}
 			}
 			catch (InvalidOperationException)
