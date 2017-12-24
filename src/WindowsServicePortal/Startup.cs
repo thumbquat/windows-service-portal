@@ -34,8 +34,9 @@ namespace WindowsServicePortal
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddReact();
             services.AddMvc();
+            services.AddCors();
             services.AddOptions();
-			services.AddMemoryCache();
+            services.AddMemoryCache();
 
             // Add application configuration
             services.Configure<MyOptions>(Configuration.GetSection("MyOptions"));
@@ -48,7 +49,15 @@ namespace WindowsServicePortal
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
+
             loggerFactory.AddDebug();
+
+            app.UseCors(builder =>
+            {
+                builder.AllowAnyMethod();
+                builder.AllowAnyHeader();
+                builder.AllowAnyOrigin();
+            });
 
             app.UseReact(config =>
             {
